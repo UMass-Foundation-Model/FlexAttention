@@ -1,12 +1,17 @@
 # FlexAttention for Efficient High-Resolution Vision-Language Models
 
-[TOC]
+[[Project Page](https://vis-www.cs.umass.edu/flexattention/)] [[Paper](https://vis-www.cs.umass.edu/flexattention/)]
 
 ## Overview
 
 ![overview](assets/overview.jpg)
 
 This repository contains the official code for FlexAttention for Efficient High-Resolution Vision-Language Models.
+
+## News
+
+* July 2024: Open-source codebase and evaluation.
+* July 2024: Accepted by ECCV'2024!
 
 ## Installation
 
@@ -69,6 +74,10 @@ torchrun --nproc_per_node 3 scripts/evaluation/eval_magnifier.py --dist --model-
 ## Training
 
 Coming soon.
+
+## Acknowledgement
+
+[LLaVA](https://github.com/haotian-liu/LLaVA): the codebase that our project build on. Thanks for their amazing code and model.
 
 ## Citation
 
