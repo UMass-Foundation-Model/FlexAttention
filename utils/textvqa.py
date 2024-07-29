@@ -7,8 +7,8 @@ from PIL import Image
 class TextVQADataset(Dataset):
     def __init__(
         self,
-        image_dir_path="/gpfs/u/home/LMCG/LMCGljnn/scratch/code/hdvlm/datasets/textvqa/train_images",
-        annotations_path="/gpfs/u/home/LMCG/LMCGljnn/scratch/code/hdvlm/datasets/textvqa/TextVQA_0.5.1_val.json",
+        image_dir_path="datasets/eval/textvqa/train_images",
+        annotations_path="datasets/eval/textvqa/TextVQA_0.5.1_val.json",
     ):
         annotations = json.load(open(annotations_path))["data"]
         self.questions = []

@@ -7,8 +7,8 @@ import base64
 class MagnifierDataset(Dataset):
     def __init__(
         self,
-        image_dir_path="/gpfs/u/home/LMCG/LMCGljnn/scratch-shared/cdl/hdvlm/data/MagnifierBench/images.json",
-        annotations_path="/gpfs/u/home/LMCG/LMCGljnn/scratch-shared/cdl/hdvlm/data/MagnifierBench/data_instructions.json",
+        image_dir_path="datasets/eval/MagnifierBench/images.json",
+        annotations_path="datasets/eval/MagnifierBench/data_instructions.json",
     ):
         image_path = image_dir_path
         with open(image_path, "r") as f:

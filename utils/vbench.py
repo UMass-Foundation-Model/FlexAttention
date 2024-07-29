@@ -9,7 +9,7 @@ class VBenchDataset(Dataset):
     def __init__(
         self,
         subset="direct_attributes",
-        root="/gpfs/u/home/LMCG/LMCGljnn/scratch/code/hdvlm/datasets/vstar_bench",
+        root="datasets/eval/vstar_bench",
     ):
         annotations = glob.glob(os.path.join(root, subset, "*.json"))
         self.questions = []

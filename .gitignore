@@ -1,12 +1,6 @@
-vis_temp*/*
 *.out
-playground/*
-*example*/
-past_*/
-playground/
-*checkpoint*/
-data/
-vbench_*/
+checkpoints/
+datasets/
 
 # Python
 __pycache__

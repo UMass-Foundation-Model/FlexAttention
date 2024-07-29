@@ -85,75 +85,6 @@ def eval_textvqa(model, tokenizer, image_processor, args, dataset_cls=TextVQADat
         ans_file.close()
 
 
-def eval_docvqa(model, tokenizer, image_processor, args):
-    eval_dataset = DocVQADataset()
-    conv = conv_templates[args.conv_mode].copy()
-    model.eval()
-    ans_strs = []
-    for ib, batch in enumerate(tqdm(eval_dataset, desc="Running inference", disable=(args.rank != 0))):
-        if ib % args.world_size != args.rank:
-            continue
-        image = batch["image"].convert("RGB")
-        prompt = f"A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: <image>\n{batch['question']}\nAnswer the question using a single word or phrase. ASSISTANT:"
-        input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).to(model.device)
-        image_tensor = process_images([image], image_processor, args)
-        if type(image_tensor) is list:
-            image_tensor = [image.to(model.device, dtype=torch.float16) for image in image_tensor]
-        else:
-            image_tensor = image_tensor.to(model.device, dtype=torch.float16)
-        stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
-        keywords = [stop_str]
-        stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
-        with torch.inference_mode():
-            output_ids = model.generate(
-                input_ids,
-                images=image_tensor,
-                do_sample=False,
-                temperature=args.temperature,
-                max_new_tokens=args.max_new_tokens,
-                use_cache=True,
-                stopping_criteria=[stopping_criteria])
-        new_predictions = tokenizer.decode(output_ids[0], skip_special_tokens=True).strip()
-        ans_str = deepcopy(batch)
-        del ans_str["image"]
-        ans_str["prediction"] = new_predictions
-        ans_strs.append([ib, ans_str])
-
-    pkl.dump(ans_strs, open(f"temp_docvqa_{args.id}_{args.rank}.pkl", "wb"))
-    time.sleep(1)
-    dist.barrier()
-    if dist.get_rank() == 0:
-        punctuation_string = string.punctuation
-        uuid = str(int(time.time())) + shortuuid.uuid()[:4]
-        merged_list = []
-        for i in range(args.world_size):
-            filename = f"temp_docvqa_{args.id}_{i}.pkl"
-            merged_list.extend(pkl.load(open(filename, "rb")))
-            os.remove(filename)
-        merged_list = sorted(merged_list, key=lambda x: x[0])
-        ans_file = open(f"answer_docvqa_{args.id}_{uuid}.jsonl", "w")
-        json.dump([x[1] for x in merged_list], ans_file, indent=1)
-        ans_file.close()
-        ans_file = json.load(open(f"answer_docvqa_{args.id}_{uuid}.jsonl"))
-        scores = []
-        for sample in ans_file:
-            answer = sample["answers"][0].lower()
-            prediction = sample["prediction"].lower()
-            for i in punctuation_string:
-                answer = answer.replace(i, '')
-                prediction = prediction.replace(i, '')
-            answer = answer.strip()
-            prediction = prediction.strip()
-            if answer in prediction:
-                scores.append(1.0)
-            else:
-                scores.append(0.0)
-        print("score:", np.mean(scores))
-
-
-def eval_chartqa(model, tokenizer, image_processor, args):
-    eval_textvqa(model, tokenizer, image_processor, args, dataset_cls=ChartQADataset)
-
 
 def main(args):
     seed_everything(0)
@@ -182,10 +113,6 @@ def main(args):
         print("Evaluate on", args.task)
     if "textvqa" == args.task:
         eval_textvqa(model, tokenizer, image_processor, args)
-    elif "docvqa" == args.task:
-        eval_docvqa(model, tokenizer, image_processor, args)
-    elif "chartqa" == args.task:
-        eval_chartqa(model, tokenizer, image_processor, args)
     else:
         raise NotImplementedError
 
