@@ -1,6 +1,6 @@
 # FlexAttention for Efficient High-Resolution Vision-Language Models
 
-[[Project Page](https://vis-www.cs.umass.edu/flexattention/)] [[Paper](https://vis-www.cs.umass.edu/flexattention/)]
+[[Project Page](https://vis-www.cs.umass.edu/flexattention/)] [[Paper](https://arxiv.org/pdf/2407.20228)]
 
 ## Overview
 
