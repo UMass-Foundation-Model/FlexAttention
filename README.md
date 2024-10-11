@@ -25,7 +25,7 @@ pip install -e ./transformers
 
 ## Checkpoint
 
-You can download our 7B model checkpoint from [huggingface]() and put it into `checkpoints` folder.
+You can download our 7B model checkpoint from [huggingface](https://huggingface.co/senfu/llava-v1.5-7b-flexattn) and put it into `checkpoints` folder.
 
 ## Evaluation
 
