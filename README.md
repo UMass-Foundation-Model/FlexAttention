@@ -10,6 +10,7 @@ This repository contains the official code for FlexAttention for Efficient High-
 
 ## News
 
+* Jan 2025: Training documentation released.
 * July 2024: Open-source codebase and evaluation.
 * July 2024: Accepted by ECCV'2024!
 
@@ -73,7 +74,55 @@ torchrun --nproc_per_node 3 scripts/evaluation/eval_magnifier.py --dist --model-
 
 ## Training
 
-Coming soon.
+### Prepare Data
+
+First, follow LLaVA's [instruction](https://github.com/haotian-liu/LLaVA?tab=readme-ov-file#visual-instruction-tuning) to prepare the image and annotation. The overall folder structure will look like this:
+
+```
+playground
+├── llava_v1_5_mix665k
+       ├── llava_v1_5_mix665k.json
+       ├── coco
+       │   └── train2017
+       ├── gqa
+       │   └── images
+       ├── ocr_vqa
+       │   └── images
+       ├── textvqa
+       │   └── train_images
+       └── vg
+           ├── VG_100K
+           └── VG_100K_2
+```
+
+Then, run the data cleaning script to clean the data.
+```
+python tools/prepare_data.py
+```
+
+In this script, we perform the following actions:
+1. Insert a placeholder `<image>` tag for samples containing only text.
+2. Correct any incorrect image file extensions found in the original data.
+3. Remove samples that use non-existent images.
+
+You can directly download the prepared file [here](https://drive.google.com/file/d/13KibuGxvI-Py4o3BoE-52LJge934lPMM/view?usp=sharing).
+
+### Prepare Model Weight
+
+Initialize the weights for the newly added high-resolution projection layers.
+
+```
+python tools/download_model.py
+python tools/prepare_model.py
+```
+
+### Start Training
+
+Finally, run the training script:
+
+```
+bash scripts/train/llava-v1.5-7b-flexattn.sh
+```
 
 ## Acknowledgement
 
