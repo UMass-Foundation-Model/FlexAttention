@@ -133,13 +133,12 @@ bash scripts/train/llava-v1.5-7b-flexattn.sh
 If our work is useful or relevant to your research, please kindly recognize our contributions by citing our paper:
 
 ```
-@misc{li2024flexattention,
-      title={FlexAttention for Efficient High-Resolution Vision-Language Models}, 
-      author={Junyan Li and Delin Chen and Tianle Cai and Peihao Chen and Yining Hong and Zhenfang Chen and Yikang Shen and Chuang Gan},
-      year={2024},
-      eprint={2407.20228},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2407.20228}, 
+@inproceedings{li2025flexattention,
+  title={Flexattention for efficient high-resolution vision-language models},
+  author={Li, Junyan and Chen, Delin and Cai, Tianle and Chen, Peihao and Hong, Yining and Chen, Zhenfang and Shen, Yikang and Gan, Chuang},
+  booktitle={European Conference on Computer Vision},
+  pages={286--302},
+  year={2025},
+  organization={Springer}
 }
 ```
