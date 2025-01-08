@@ -107,14 +107,6 @@ In this script, we perform the following actions:
 
 You can directly download the prepared file [here](https://drive.google.com/file/d/13KibuGxvI-Py4o3BoE-52LJge934lPMM/view?usp=sharing).
 
-### Prepare Model Weight
-
-Initialize the weights for the newly added high-resolution projection layers.
-
-```
-python tools/download_model.py
-python tools/prepare_model.py
-```
 
 ### Start Training
 

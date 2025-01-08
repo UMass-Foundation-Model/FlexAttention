@@ -2,7 +2,7 @@
 export TRANSFORMERS_OFFLINE=1
 python -u -m torch.distributed.run --nproc_per_node 6 --nnodes $NNODES --rdzv_endpoint $MASTER_ADDR:$MASTER_PORT --rdzv_backend c10d --max_restarts 0 llava/train/train.py \
     --deepspeed ./scripts/zero3_offload.json \
-    --model_name_or_path ../llava-v1.5-7b-2 \
+    --model_name_or_path liuhaotian/llava-v1.5-7b \
     --version v1 \
     --extra zoom_ratio:3#warmup:10#lowres_size:336#highres_size:1008#threshold:48 \
     --data_path playground/llava_v1_5_mix665k/llava_v1_5_mix665k_clean_ok.json \
